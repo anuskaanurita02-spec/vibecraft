@@ -1,4 +1,4 @@
-import { Music, Cpu, Briefcase, Utensils, Palette, Dumbbell, Heart, Users, Share2 } from "lucide-react";
+import { Music, Cpu, Briefcase, Utensils, Palette, Dumbbell, Heart, Users, Share2, Film } from "lucide-react";
 
 const categories = [
   { name: "Music", icon: Music, count: 234, color: "bg-pink-500/10 text-pink-500" },
@@ -10,6 +10,7 @@ const categories = [
   { name: "Health", icon: Heart, count: 92, color: "bg-green-500/10 text-green-500" },
   { name: "Community", icon: Users, count: 203, color: "bg-cyan-500/10 text-cyan-500" },
   { name: "Social", icon: Share2, count: 167, color: "bg-indigo-500/10 text-indigo-500" },
+  { name: "Entertainment", icon: Film, count: 198, color: "bg-yellow-500/10 text-yellow-500" },
 ];
 
 const CategoryGrid = () => {
