@@ -11,7 +11,7 @@ import {
 
 const HeroSection = () => {
   const popularCategories = ["Music", "Technology", "Food & Drink", "Arts"];
-  const categoryOptions = ["All Categories", "Music", "Technology", "Business", "Food & Drink", "Arts", "Sports", "Health", "Community"];
+  const categoryOptions = ["All Categories", "Music", "Technology", "Business", "Food & Drink", "Arts", "Sports", "Health", "Community", "Social"];
 
   return (
     <section className="relative min-h-[90vh] flex items-center bg-gradient-hero overflow-hidden">

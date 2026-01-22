@@ -14,7 +14,7 @@ const Discover = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("date");
 
-  const categories = ["All", "Music", "Technology", "Business", "Food & Drink", "Arts", "Sports", "Health", "Community"];
+  const categories = ["All", "Music", "Technology", "Business", "Food & Drink", "Arts", "Sports", "Health", "Community", "Social"];
   
   let events = eventStore.search(searchQuery, selectedCategory);
   

@@ -31,7 +31,7 @@ const CreateEvent = () => {
     isPrivate: false,
   });
 
-  const categories = ["Music", "Technology", "Business", "Food & Drink", "Arts", "Sports", "Health", "Community"];
+  const categories = ["Music", "Technology", "Business", "Food & Drink", "Arts", "Sports", "Health", "Community", "Social"];
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
