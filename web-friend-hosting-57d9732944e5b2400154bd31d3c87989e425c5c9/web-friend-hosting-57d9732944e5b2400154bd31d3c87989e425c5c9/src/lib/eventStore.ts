@@ -154,6 +154,8 @@ const mockEvents: Event[] = [
 class EventStore {
   private events: Event[] = [];
   private storageKey = "vibecraft-events";
+  private registrationsKey = "vibecraft-registrations";
+  private currentUserId = "user-1"; // Mock user ID for demo purposes
 
   constructor() {
     this.loadFromStorage();
@@ -220,9 +222,61 @@ class EventStore {
     if (event && event.attendees < event.capacity) {
       event.attendees += 1;
       this.saveToStorage();
+      
+      // Track user registration
+      const registrations = this.getUserRegistrations();
+      if (!registrations.includes(eventId)) {
+        registrations.push(eventId);
+        this.saveUserRegistrations(registrations);
+      }
+      
       return true;
     }
     return false;
+  }
+
+  cancelRegistration(eventId: string): boolean {
+    const event = this.getById(eventId);
+    const registrations = this.getUserRegistrations();
+    
+    if (event && registrations.includes(eventId)) {
+      event.attendees = Math.max(0, event.attendees - 1);
+      this.saveToStorage();
+      
+      // Remove from user registrations
+      const updatedRegistrations = registrations.filter(id => id !== eventId);
+      this.saveUserRegistrations(updatedRegistrations);
+      
+      return true;
+    }
+    return false;
+  }
+
+  isUserRegistered(eventId: string): boolean {
+    const registrations = this.getUserRegistrations();
+    return registrations.includes(eventId);
+  }
+
+  getUserRegisteredEvents(): Event[] {
+    const registrations = this.getUserRegistrations();
+    return this.events.filter(event => registrations.includes(event.id));
+  }
+
+  private getUserRegistrations(): string[] {
+    try {
+      const stored = localStorage.getItem(`${this.registrationsKey}-${this.currentUserId}`);
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  private saveUserRegistrations(registrations: string[]): void {
+    try {
+      localStorage.setItem(`${this.registrationsKey}-${this.currentUserId}`, JSON.stringify(registrations));
+    } catch (e) {
+      console.error("Failed to save registrations to localStorage", e);
+    }
   }
 
   search(query: string, category?: string, location?: string): Event[] {

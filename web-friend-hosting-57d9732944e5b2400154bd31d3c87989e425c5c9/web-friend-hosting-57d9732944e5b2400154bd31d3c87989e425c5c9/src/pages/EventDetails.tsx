@@ -16,6 +16,7 @@ const EventDetails = () => {
   const event = eventStore.getById(id || "");
   const { toast } = useToast();
   const [isRegistering, setIsRegistering] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
 
   if (!event) {
     return (
@@ -34,6 +35,8 @@ const EventDetails = () => {
     );
   }
 
+  const isRegistered = eventStore.isUserRegistered(event.id);
+
   const handleRegister = () => {
     setIsRegistering(true);
     setTimeout(() => {
@@ -44,10 +47,32 @@ const EventDetails = () => {
           title: "Registration successful!",
           description: `You're now registered for ${event.title}`,
         });
+        window.location.reload(); // Refresh to update UI
       } else {
         toast({
           title: "Registration failed",
           description: "This event is at full capacity.",
+          variant: "destructive",
+        });
+      }
+    }, 1000);
+  };
+
+  const handleCancelRegistration = () => {
+    setIsCancelling(true);
+    setTimeout(() => {
+      const success = eventStore.cancelRegistration(event.id);
+      setIsCancelling(false);
+      if (success) {
+        toast({
+          title: "Registration cancelled",
+          description: `Your registration for ${event.title} has been cancelled`,
+        });
+        window.location.reload(); // Refresh to update UI
+      } else {
+        toast({
+          title: "Cancellation failed",
+          description: "Unable to cancel your registration.",
           variant: "destructive",
         });
       }
@@ -177,14 +202,33 @@ const EventDetails = () => {
                     </p>
                   </div>
 
-                  <Button
-                    className="w-full bg-gradient-primary hover:opacity-90 h-12 text-lg"
-                    onClick={handleRegister}
-                    disabled={isRegistering || spotsLeft <= 0}
-                  >
-                    <Ticket className="w-5 h-5 mr-2" />
-                    {isRegistering ? "Processing..." : spotsLeft <= 0 ? "Sold Out" : "Get Tickets"}
-                  </Button>
+                  <div className="space-y-3">
+                    {isRegistered ? (
+                      <Button
+                        variant="outline"
+                        className="w-full border-red-500 text-red-500 hover:bg-red-50 h-12 text-lg"
+                        onClick={handleCancelRegistration}
+                        disabled={isCancelling}
+                      >
+                        {isCancelling ? "Cancelling..." : "Cancel Registration"}
+                      </Button>
+                    ) : (
+                      <Button
+                        className="w-full bg-gradient-primary hover:opacity-90 h-12 text-lg"
+                        onClick={handleRegister}
+                        disabled={isRegistering || spotsLeft <= 0}
+                      >
+                        <Ticket className="w-5 h-5 mr-2" />
+                        {isRegistering ? "Processing..." : spotsLeft <= 0 ? "Sold Out" : "Get Tickets"}
+                      </Button>
+                    )}
+                    
+                    {isRegistered && (
+                      <div className="text-center">
+                        <p className="text-sm text-green-600 font-medium">✓ You're registered for this event</p>
+                      </div>
+                    )}
+                  </div>
 
                   <div className="flex items-center justify-between text-sm text-muted-foreground">
                     <div className="flex items-center gap-2">
