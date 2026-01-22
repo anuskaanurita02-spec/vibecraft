@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Sparkles, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Sparkles, Mail, Lock, Square } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import loginBgImage from "@/assets/vibecraft-login.jpg";
 
 const Login = () => {
@@ -103,15 +104,19 @@ const Login = () => {
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-12 pr-12 h-12 bg-secondary border-0 focus-visible:ring-primary"
+                  className="pl-12 h-12 bg-secondary border-0 focus-visible:ring-primary"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="show-password"
+                  checked={showPassword}
+                  onCheckedChange={(checked) => setShowPassword(checked === true)}
+                />
+                <Label htmlFor="show-password" className="text-sm text-muted-foreground flex items-center gap-2 cursor-pointer">
+                  <Square className="w-4 h-4" />
+                  Show password
+                </Label>
               </div>
             </div>
 
